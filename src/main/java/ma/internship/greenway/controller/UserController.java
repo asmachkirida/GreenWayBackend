@@ -1,6 +1,7 @@
 package ma.internship.greenway.controller;
 
 
+import ma.internship.greenway.dto.PassengerDTO;
 import ma.internship.greenway.dto.ReqRes;
 import ma.internship.greenway.entity.User;
 import ma.internship.greenway.service.UsersManagementService;
@@ -15,6 +16,10 @@ public class UserController {
     @Autowired
     private UsersManagementService usersManagementService;
 
+    @PostMapping("/auth/register-passenger")
+    public ResponseEntity<ReqRes> registerPassenger(@RequestBody PassengerDTO reg) {
+        return ResponseEntity.ok(usersManagementService.registerPassenger(reg));
+    }
     @PostMapping("/auth/register")
     public ResponseEntity<ReqRes> register(@RequestBody ReqRes reg){
         return ResponseEntity.ok(usersManagementService.register(reg));

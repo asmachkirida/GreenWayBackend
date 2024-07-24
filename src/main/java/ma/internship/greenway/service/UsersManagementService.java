@@ -1,11 +1,12 @@
 package ma.internship.greenway.service;
 
 
-import ma.internship.greenway.config.JWTAuthFilter;
+import ma.internship.greenway.dto.PassengerDTO;
 import ma.internship.greenway.dto.ReqRes;
+import ma.internship.greenway.entity.Passenger;
 import ma.internship.greenway.entity.User;
+import ma.internship.greenway.repository.PassengerRepository;
 import ma.internship.greenway.repository.UserRepo;
-import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,6 +31,49 @@ public class UsersManagementService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PassengerRepository passengerRepository;
+
+
+    public ReqRes registerPassenger(PassengerDTO registrationRequest) {
+        ReqRes resp = new ReqRes();
+
+        try {
+            Passenger passenger = new Passenger();
+            passenger.setEmail(registrationRequest.getEmail());
+            passenger.setGender(registrationRequest.getGender());
+            passenger.setPhoneNumber(registrationRequest.getPhoneNumber());
+            passenger.setFirstName(registrationRequest.getFirstName());
+            passenger.setLastName(registrationRequest.getLastName());
+
+            // Convert birth date string to Date object
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date birthDate = dateFormat.parse(registrationRequest.getBirthDate());
+            passenger.setBirthDate(birthDate);
+
+            passenger.setRole(registrationRequest.getRole());
+            passenger.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+            passenger.setCity(registrationRequest.getCity());
+            passenger.setMembership(registrationRequest.getMembership());
+
+            // Save the passenger
+            Passenger savedPassenger = passengerRepository.save(passenger);
+
+            if (savedPassenger.getId() != null) {
+                String token = jwtUtils.generateToken(savedPassenger);
+                resp.setOurUsers(savedPassenger);
+
+                resp.setMessage("Passenger Registered Successfully");
+                resp.setStatusCode(200);
+                resp.setToken(token);
+            }
+        } catch (Exception e) {
+            resp.setStatusCode(500);
+            resp.setError(e.getMessage());
+        }
+        return resp;
+    }
+
 
 
     public ReqRes register(ReqRes registrationRequest) {
