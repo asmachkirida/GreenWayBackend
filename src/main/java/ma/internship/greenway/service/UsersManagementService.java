@@ -1,10 +1,13 @@
 package ma.internship.greenway.service;
 
 
+import ma.internship.greenway.dto.DriverDTO;
 import ma.internship.greenway.dto.PassengerDTO;
 import ma.internship.greenway.dto.ReqRes;
+import ma.internship.greenway.entity.Driver;
 import ma.internship.greenway.entity.Passenger;
 import ma.internship.greenway.entity.User;
+import ma.internship.greenway.repository.DriverRepository;
 import ma.internship.greenway.repository.PassengerRepository;
 import ma.internship.greenway.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +36,48 @@ public class UsersManagementService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private PassengerRepository passengerRepository;
+    @Autowired
+    private DriverRepository driverRepository;
 
+    public ReqRes registerDriver(DriverDTO registrationRequest) {
+        ReqRes resp = new ReqRes();
+
+        try {
+            Driver driver = new Driver();
+            driver.setEmail(registrationRequest.getEmail());
+            driver.setGender(registrationRequest.getGender());
+            driver.setPhoneNumber(registrationRequest.getPhoneNumber());
+            driver.setFirstName(registrationRequest.getFirstName());
+            driver.setLastName(registrationRequest.getLastName());
+
+            // Convert birth date string to Date object
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date birthDate = dateFormat.parse(registrationRequest.getBirthDate());
+            driver.setBirthDate(birthDate);
+
+            driver.setRole(registrationRequest.getRole());
+            driver.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+            driver.setCity(registrationRequest.getCity());
+            driver.setLicenseNumber(registrationRequest.getLicenseNumber());
+            driver.setRating(registrationRequest.getRating());
+            driver.setBio(registrationRequest.getBio());
+
+            // Save the driver
+            Driver savedDriver = driverRepository.save(driver);
+
+            if (savedDriver.getId() != null) {
+                String token = jwtUtils.generateToken(savedDriver);
+                resp.setOurUsers(savedDriver);
+                resp.setMessage("Driver Registered Successfully");
+                resp.setStatusCode(200);
+                resp.setToken(token);
+            }
+        } catch (Exception e) {
+            resp.setStatusCode(500);
+            resp.setError(e.getMessage());
+        }
+        return resp;
+    }
 
     public ReqRes registerPassenger(PassengerDTO registrationRequest) {
         ReqRes resp = new ReqRes();
