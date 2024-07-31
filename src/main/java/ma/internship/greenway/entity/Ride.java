@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -32,4 +34,8 @@ public class Ride {
     @ManyToOne
     @JoinColumn(name = "car_id", nullable = false)
     private Car car;
+
+
+    @OneToMany(mappedBy = "ride", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
 }
