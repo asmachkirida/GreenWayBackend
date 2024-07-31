@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -23,5 +25,7 @@ public class Car {
     @JoinColumn(name = "driver_id", nullable = false)
     private Driver driver;
 
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Ride> rides;
 
 }
