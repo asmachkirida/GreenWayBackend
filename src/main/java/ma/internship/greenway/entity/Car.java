@@ -28,4 +28,5 @@ public class Car {
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ride> rides;
 
+
 }
