@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@Entity
+@Entity(name = "bikeride")
 @NoArgsConstructor
 @AllArgsConstructor
 public class BikeRide {
