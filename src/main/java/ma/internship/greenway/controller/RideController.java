@@ -1,11 +1,14 @@
 package ma.internship.greenway.controller;
 
 import ma.internship.greenway.dto.RideDTO;
+import ma.internship.greenway.entity.Ride;
 import ma.internship.greenway.service.RideService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -49,5 +52,18 @@ public class RideController {
     public ResponseEntity<List<RideDTO>> getRidesByCarId(@PathVariable Integer carId) {
         List<RideDTO> rides = rideService.getRidesByCarId(carId);
         return ResponseEntity.ok(rides);
+    }
+
+    @PostMapping("/filter")
+    public List<Ride> filterRides(@RequestParam(required = false) String startLocation,
+                                  @RequestParam(required = false) String endLocation,
+                                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                                  @RequestParam(required = false) Double minPrice,
+                                  @RequestParam(required = false) Double maxPrice,
+                                  @RequestParam(required = false) Boolean airConditionning,
+                                  @RequestParam(required = false) Boolean petAllowed,
+                                  @RequestParam(required = false) Integer minDuration,
+                                  @RequestParam(required = false) Integer maxDuration) {
+        return rideService.filterRides(startLocation, endLocation, date, minPrice, maxPrice, airConditionning, petAllowed, minDuration, maxDuration);
     }
 }

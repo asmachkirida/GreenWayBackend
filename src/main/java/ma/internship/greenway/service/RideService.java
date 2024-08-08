@@ -8,6 +8,8 @@ import ma.internship.greenway.repository.RideRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -107,5 +109,19 @@ public class RideService {
         rideDTO.setStatus(ride.getStatus());
         rideDTO.setCarId(ride.getCar().getId());
         return rideDTO;
+    }
+
+    public List<Ride> filterRides(String startLocation, String endLocation, LocalDate date, Double minPrice, Double maxPrice, Boolean airConditionning, Boolean petAllowed, Integer minDuration, Integer maxDuration) {
+        return rideRepository.findAll().stream()
+                .filter(r -> (startLocation == null || r.getStartLocation().equalsIgnoreCase(startLocation)) &&
+                        (endLocation == null || r.getEndLocation().equalsIgnoreCase(endLocation)) &&
+                        (date == null || r.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isEqual(date)) &&
+                        (minPrice == null || r.getPrice() >= minPrice) &&
+                        (maxPrice == null || r.getPrice() <= maxPrice) &&
+                        (airConditionning == null || r.isAirConditionning() == airConditionning) &&
+                        (petAllowed == null || r.isPetAllowed() == petAllowed) &&
+                        (minDuration == null || r.getDuration() >= minDuration) &&
+                        (maxDuration == null || r.getDuration() <= maxDuration))
+                .collect(Collectors.toList());
     }
 }
