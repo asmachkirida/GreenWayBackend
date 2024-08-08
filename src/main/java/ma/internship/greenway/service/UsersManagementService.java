@@ -235,19 +235,21 @@ public class UsersManagementService {
     }
 
 
-    public ReqRes getUsersById(Integer id) {
+    public ReqRes getUserById(Integer id) {
         ReqRes reqRes = new ReqRes();
         try {
-            User usersById = usersRepo.findById(id).orElseThrow(() -> new RuntimeException("User Not found"));
-            reqRes.setOurUsers(usersById);
+            User user = usersRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+            reqRes.setOurUsers(user);
             reqRes.setStatusCode(200);
-            reqRes.setMessage("Users with id '" + id + "' found successfully");
+            reqRes.setMessage("User with ID '" + id + "' found successfully");
         } catch (Exception e) {
             reqRes.setStatusCode(500);
             reqRes.setMessage("Error occurred: " + e.getMessage());
         }
         return reqRes;
     }
+
+
 
 
     public ReqRes deleteUser(Integer userId) {
