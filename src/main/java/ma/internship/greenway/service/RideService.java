@@ -124,4 +124,13 @@ public class RideService {
                         (maxDuration == null || r.getDuration() <= maxDuration))
                 .collect(Collectors.toList());
     }
+
+    public List<Ride> searchRides(String startLocation, String endLocation, Integer nbrPassengers, LocalDate date) {
+        return rideRepository.findAll().stream()
+                .filter(r -> (startLocation == null || r.getStartLocation().equalsIgnoreCase(startLocation)) &&
+                        (endLocation == null || r.getEndLocation().equalsIgnoreCase(endLocation)) &&
+                        (nbrPassengers == null || r.getNbrPassengers() >= nbrPassengers) &&
+                        (date == null || r.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isEqual(date)))
+                .collect(Collectors.toList());
+    }
 }

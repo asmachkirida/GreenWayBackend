@@ -66,4 +66,12 @@ public class RideController {
                                   @RequestParam(required = false) Integer maxDuration) {
         return rideService.filterRides(startLocation, endLocation, date, minPrice, maxPrice, airConditionning, petAllowed, minDuration, maxDuration);
     }
+
+    @GetMapping("/search")
+    public List<Ride> searchRides(@RequestParam(required = false) String startLocation,
+                                  @RequestParam(required = false) String endLocation,
+                                  @RequestParam(required = false) Integer nbrPassengers,
+                                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return rideService.searchRides(startLocation, endLocation, nbrPassengers, date);
+    }
 }
