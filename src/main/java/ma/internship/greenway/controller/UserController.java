@@ -90,5 +90,10 @@ public class UserController {
         return usersManagementService.searchDrivers(searchTerm);
     }
 
+    @GetMapping("/admin/passengers/search")
+    public List<User> searchPassengers(
+            @RequestParam(required = false, defaultValue = "") String searchTerm) {
+        return usersManagementService.searchPessengers(searchTerm);
+    }
 }
 

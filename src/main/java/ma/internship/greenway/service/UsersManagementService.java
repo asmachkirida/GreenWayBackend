@@ -344,6 +344,11 @@ public class UsersManagementService {
         return usersRepo.searchByRoleAndName("DRIVER", searchTerm);
     }
 
+    public List<User> searchPessengers(String searchTerm) {
+        return usersRepo.searchByRoleAndName("PASSENGER", searchTerm);
+    }
+
+
 }
 
 
