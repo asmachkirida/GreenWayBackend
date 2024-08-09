@@ -337,4 +337,14 @@ public class UsersManagementService {
     public List<User> getPassengers() {
             return usersRepo.findByRole("PASSENGER");
     }
+
+    // Search drivers by first name and last name
+    public List<User> searchDrivers(String firstName, String lastName) {
+        return usersRepo.findByRoleAndFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase("DRIVER", firstName, lastName);
+    }
+
+    // Search passengers by first name and last name
+    public List<User> searchPassengers(String firstName, String lastName) {
+        return usersRepo.findByRoleAndFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase("PASSENGER", firstName, lastName);
+    }
 }
