@@ -338,13 +338,13 @@ public class UsersManagementService {
             return usersRepo.findByRole("PASSENGER");
     }
 
-    // Search drivers by first name and last name
-    public List<User> searchDrivers(String firstName, String lastName) {
-        return usersRepo.findByRoleAndFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase("DRIVER", firstName, lastName);
+
+    // Your method for searching drivers
+    public List<User> searchDrivers(String searchTerm) {
+        return usersRepo.searchByRoleAndName("DRIVER", searchTerm);
     }
 
-    // Search passengers by first name and last name
-    public List<User> searchPassengers(String firstName, String lastName) {
-        return usersRepo.findByRoleAndFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase("PASSENGER", firstName, lastName);
-    }
 }
+
+
+

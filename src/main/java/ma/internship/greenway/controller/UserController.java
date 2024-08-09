@@ -86,17 +86,9 @@ public class UserController {
 
     @GetMapping("/admin/drivers/search")
     public List<User> searchDrivers(
-            @RequestParam(required = false, defaultValue = "") String firstName,
-            @RequestParam(required = false, defaultValue = "") String lastName) {
-        return usersManagementService.searchDrivers(firstName, lastName);
+            @RequestParam(required = false, defaultValue = "") String searchTerm) {
+        return usersManagementService.searchDrivers(searchTerm);
     }
 
-    // Endpoint to search passengers by first name and last name
-    @GetMapping("/admin/passengers/search")
-    public List<User> searchPassengers(
-            @RequestParam(required = false, defaultValue = "") String firstName,
-            @RequestParam(required = false, defaultValue = "") String lastName) {
-        return usersManagementService.searchPassengers(firstName, lastName);
-    }
 }
 
