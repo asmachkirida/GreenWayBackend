@@ -327,4 +327,14 @@ public class UsersManagementService {
         return reqRes;
 
     }
+
+    // Get users with DRIVER role
+    public List<User> getDrivers() {
+        return usersRepo.findByRole("DRIVER");
+    }
+
+    // Get users with PASSENGER role
+    public List<User> getPassengers() {
+            return usersRepo.findByRole("PASSENGER");
+    }
 }

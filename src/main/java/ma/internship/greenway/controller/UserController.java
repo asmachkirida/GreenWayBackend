@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class UserController {
     @Autowired
@@ -69,6 +71,17 @@ public class UserController {
     @DeleteMapping("/admin/delete/{userId}")
     public ResponseEntity<ReqRes> deleteUSer(@PathVariable Integer userId){
         return ResponseEntity.ok(usersManagementService.deleteUser(userId));
+    }
+
+    @GetMapping("/admin/drivers")
+    public List<User> getDrivers() {
+        return usersManagementService.getDrivers();
+    }
+
+    // Endpoint to get all passengers
+    @GetMapping("/admin/passengers")
+    public List<User> getPassengers() {
+        return usersManagementService.getPassengers();
     }
 
 
