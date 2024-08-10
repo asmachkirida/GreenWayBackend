@@ -50,4 +50,9 @@ public class CarController {
         List<CarDTO> cars = carService.getCarsByDriverId(driverId);
         return ResponseEntity.ok(cars);
     }
+
+    @GetMapping("/search")
+    public List<CarDTO> searchCars(@RequestParam(required = false) String brand) {
+        return carService.searchCars(brand);
+    }
 }

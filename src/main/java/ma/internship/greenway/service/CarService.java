@@ -91,4 +91,11 @@ public class CarService {
                 car.getDriver().getId()
         );
     }
+
+    public List<CarDTO> searchCars(String brand) {
+        List<Car> cars = carRepository.searchByBrand(brand);
+        return cars.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
 }
