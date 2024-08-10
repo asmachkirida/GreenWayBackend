@@ -54,11 +54,13 @@ public class UserController {
         return ResponseEntity.ok(usersManagementService.getUserById(userId));
     }
 
-
+/*
+*
     @PutMapping("/admin/update/{userId}")
     public ResponseEntity<ReqRes> updateUser(@PathVariable Integer userId, @RequestBody User reqres){
         return ResponseEntity.ok(usersManagementService.updateUser(userId, reqres));
     }
+    */
 
     @GetMapping("/adminuser/get-profile")
     public ResponseEntity<ReqRes> getMyProfile(){
@@ -94,6 +96,12 @@ public class UserController {
     public List<User> searchPassengers(
             @RequestParam(required = false, defaultValue = "") String searchTerm) {
         return usersManagementService.searchPessengers(searchTerm);
+    }
+
+
+    @PutMapping("/admin/updated/{userId}")
+    public ReqRes updateUsers(@PathVariable Integer userId, @RequestBody User updatedUser) {
+        return usersManagementService.updateUsers(userId, updatedUser);
     }
 }
 

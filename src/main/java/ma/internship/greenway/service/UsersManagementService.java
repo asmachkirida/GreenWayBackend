@@ -270,8 +270,8 @@ public class UsersManagementService {
         }
         return reqRes;
     }
-
-    public ReqRes updateUser(Integer userId, User updatedUser) {
+/*
+   * public ReqRes updateUser(Integer userId, User updatedUser) {
         ReqRes reqRes = new ReqRes();
         try {
             Optional<User> userOptional = usersRepo.findById(userId);
@@ -305,7 +305,7 @@ public class UsersManagementService {
         }
         return reqRes;
     }
-
+*/
 
     public ReqRes getMyInfo(String email){
         ReqRes reqRes = new ReqRes();
@@ -346,6 +346,63 @@ public class UsersManagementService {
 
     public List<User> searchPessengers(String searchTerm) {
         return usersRepo.searchByRoleAndName("PASSENGER", searchTerm);
+    }
+
+    public ReqRes updateUsers(Integer userId, User updatedUser) {
+        ReqRes reqRes = new ReqRes();
+        try {
+            Optional<User> userOptional = usersRepo.findById(userId);
+            if (userOptional.isPresent()) {
+                User existingUser = userOptional.get();
+
+                // Update common User fields
+                existingUser.setEmail(updatedUser.getEmail());
+                existingUser.setFirstName(updatedUser.getFirstName());
+                existingUser.setLastName(updatedUser.getLastName());
+                existingUser.setBirthDate(updatedUser.getBirthDate());
+                existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
+                existingUser.setRole(updatedUser.getRole());
+
+                // Check if password is present in the request
+                if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+                    // Encode the password and update it
+                    existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+                }
+
+                // Update specific fields if the user is a Driver
+                if (existingUser instanceof Driver && updatedUser instanceof Driver) {
+                    Driver existingDriver = (Driver) existingUser;
+                    Driver updatedDriver = (Driver) updatedUser;
+
+                    existingDriver.setLicenseNumber(updatedDriver.getLicenseNumber());
+                    existingDriver.setRating(updatedDriver.getRating());
+                    existingDriver.setBio(updatedDriver.getBio());
+                    // Update any other Driver-specific fields here
+                }
+
+                // Update specific fields if the user is a Passenger
+                if (existingUser instanceof Passenger && updatedUser instanceof Passenger) {
+                    Passenger existingPassenger = (Passenger) existingUser;
+                    Passenger updatedPassenger = (Passenger) updatedUser;
+
+                    existingPassenger.setCity(updatedPassenger.getCity());
+                    // Update any other Passenger-specific fields here
+                }
+
+                // Save the updated user
+                User savedUser = usersRepo.save(existingUser);
+                reqRes.setOurUsers(savedUser);
+                reqRes.setStatusCode(200);
+                reqRes.setMessage("User updated successfully");
+            } else {
+                reqRes.setStatusCode(404);
+                reqRes.setMessage("User not found for update");
+            }
+        } catch (Exception e) {
+            reqRes.setStatusCode(500);
+            reqRes.setMessage("Error occurred while updating user: " + e.getMessage());
+        }
+        return reqRes;
     }
 
 
