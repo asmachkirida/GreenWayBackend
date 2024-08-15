@@ -33,7 +33,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(request-> request.requestMatchers("/auth/**", "/public/**","/swagger-ui/**","driver/cars/**","/rides/**","/reviews/**","/bike-rides/**","/group-ride-participants/**","/bike-rides/**","/admin/**").permitAll()
+                .authorizeHttpRequests(request-> request.requestMatchers("/auth/**", "/public/**","/swagger-ui/**","driver/cars/**","/rides/**","/reviews/**","/bike-rides/**","/group-ride-participants/**","/bike-rides/**","/admin/**","/passenger/**").permitAll()
 
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                         .requestMatchers("/user/**").hasAnyAuthority("USER")

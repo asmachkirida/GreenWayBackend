@@ -39,5 +39,6 @@ public class Ride {
     @OneToMany(mappedBy = "ride", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
 
-
+    @OneToMany(mappedBy = "ride", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RidePassenger> ridePassengers;
 }

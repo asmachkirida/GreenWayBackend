@@ -5,6 +5,7 @@ import ma.internship.greenway.entity.Ride;
 import ma.internship.greenway.service.RideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,5 +74,11 @@ public class RideController {
                                   @RequestParam(required = false) Integer nbrPassengers,
                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return rideService.searchRides(startLocation, endLocation, nbrPassengers, date);
+    }
+
+    @PostMapping("/{rideId}/passengers")
+    public ResponseEntity<Void> addPassengerToRide(@PathVariable Integer rideId, @RequestBody Integer passengerId) {
+        rideService.addPassengerToRide(rideId, passengerId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

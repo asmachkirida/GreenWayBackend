@@ -1,15 +1,22 @@
 package ma.internship.greenway.service;
 
+import ma.internship.greenway.dto.PassengerDTO;
+import ma.internship.greenway.dto.ReqRes;
 import ma.internship.greenway.dto.RideDTO;
 import ma.internship.greenway.entity.Car;
+import ma.internship.greenway.entity.Passenger;
 import ma.internship.greenway.entity.Ride;
+import ma.internship.greenway.entity.RidePassenger;
 import ma.internship.greenway.repository.CarRepository;
+import ma.internship.greenway.repository.PassengerRepository;
+import ma.internship.greenway.repository.RidePassengerRepository;
 import ma.internship.greenway.repository.RideRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +28,12 @@ public class RideService {
 
     @Autowired
     private CarRepository carRepository;
+
+    @Autowired
+    private PassengerRepository passengerRepository;
+
+    @Autowired
+    private RidePassengerRepository ridePassengerRepository;
 
     public RideDTO addRide(RideDTO rideDTO) {
         Car car = carRepository.findById(rideDTO.getCarId())
@@ -108,6 +121,22 @@ public class RideService {
         rideDTO.setNbrPassengers(ride.getNbrPassengers());
         rideDTO.setStatus(ride.getStatus());
         rideDTO.setCarId(ride.getCar().getId());
+        // Fetching passengers (users) associated with this ride
+        List<ReqRes> reqResList = ride.getRidePassengers().stream()
+                .map(ridePassenger -> {
+                    ReqRes reqRes = new ReqRes();
+                    Passenger passenger = ridePassenger.getPassenger();
+                    reqRes.setFirstName(passenger.getFirstName());
+                    reqRes.setLastName(passenger.getLastName());
+                    reqRes.setEmail(passenger.getEmail());
+                    reqRes.setPhoneNumber(passenger.getPhoneNumber());
+                    reqRes.setRole("PASSENGER"); // Set the role as needed
+                    reqRes.setCity(passenger.getCity());
+                    // Set other fields of ReqRes as needed
+                    return reqRes;
+                }).collect(Collectors.toList());
+
+        rideDTO.setPassengers(reqResList);
         return rideDTO;
     }
 
@@ -133,4 +162,21 @@ public class RideService {
                         (date == null || r.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isEqual(date)))
                 .collect(Collectors.toList());
     }
+
+    public void addPassengerToRide(Integer rideId, Integer passengerId) {
+        Ride ride = rideRepository.findById(rideId)
+                .orElseThrow(() -> new RuntimeException("Ride not found"));
+        Passenger passenger = passengerRepository.findById(passengerId)
+                .orElseThrow(() -> new RuntimeException("Passenger not found"));
+
+        RidePassenger ridePassenger = new RidePassenger();
+        ridePassenger.setRide(ride);
+        ridePassenger.setPassenger(passenger);
+        ridePassenger.setBookingDate(new Date());
+        ridePassenger.setStatus("confirmed");
+
+        ridePassengerRepository.save(ridePassenger);
+    }
+
+
 }

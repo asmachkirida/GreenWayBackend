@@ -27,4 +27,5 @@ public class RideDTO {
     private String status;
     private Integer carId;
     private List<ReviewDTO> reviews;
+    private List<ReqRes> passengers;
 }
