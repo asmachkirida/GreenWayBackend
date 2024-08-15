@@ -50,4 +50,12 @@ public class BikeRideController {
         List<BikeRideDTO> bikeRides = bikeRideService.getBikeRidesByCreatorId(creatorId);
         return ResponseEntity.ok(bikeRides);
     }
+
+    @PostMapping("/{bikeRideId}/participants/{passengerId}")
+    public ResponseEntity<Void> addParticipantToBikeRide(
+            @PathVariable Integer bikeRideId,
+            @PathVariable Integer passengerId) {
+        bikeRideService.addParticipantToBikeRide(bikeRideId, passengerId);
+        return ResponseEntity.ok().build();
+    }
 }

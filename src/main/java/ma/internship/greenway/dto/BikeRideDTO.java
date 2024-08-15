@@ -18,5 +18,5 @@ public class BikeRideDTO {
     private String endLocation;
     private int maxRiders;
     private Integer creatorId;
-    private List<GroupRideParticipantsDTO> participants;
+    private List<ReqRes> participants;
 }

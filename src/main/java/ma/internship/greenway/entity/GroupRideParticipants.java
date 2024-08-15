@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "group_ride_participants")
+@Table(name = "grouprideparticipants")
 public class GroupRideParticipants {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +20,6 @@ public class GroupRideParticipants {
     private Passenger passenger;
 
     @ManyToOne
-    @JoinColumn(name = "bike_ride_id", nullable = false)
+    @JoinColumn(name = "bikeride_id", nullable = false)
     private BikeRide bikeRide;
 }

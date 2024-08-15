@@ -1,9 +1,13 @@
 package ma.internship.greenway.service;
 
+import jakarta.transaction.Transactional;
 import ma.internship.greenway.dto.BikeRideDTO;
+import ma.internship.greenway.dto.ReqRes;
 import ma.internship.greenway.entity.BikeRide;
+import ma.internship.greenway.entity.GroupRideParticipants;
 import ma.internship.greenway.entity.Passenger;
 import ma.internship.greenway.repository.BikeRideRepository;
+import ma.internship.greenway.repository.GroupRideParticipantsRepository;
 import ma.internship.greenway.repository.PassengerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,9 @@ public class BikeRideService {
 
     @Autowired
     private PassengerRepository passengerRepository;
+
+    @Autowired
+    private GroupRideParticipantsRepository groupRideParticipantsRepository;
 
     public BikeRideDTO addBikeRide(BikeRideDTO bikeRideDTO) {
         Passenger creator = passengerRepository.findById(bikeRideDTO.getCreatorId())
@@ -82,6 +89,42 @@ public class BikeRideService {
         bikeRideDTO.setEndLocation(bikeRide.getEndLocation());
         bikeRideDTO.setMaxRiders(bikeRide.getMaxRiders());
         bikeRideDTO.setCreatorId(bikeRide.getCreator().getId());
+
+        // Mapping participants to ReqRes
+        List<ReqRes> participants = bikeRide.getParticipants().stream()
+                .map(groupRideParticipant -> {
+                    ReqRes reqRes = new ReqRes();
+                    Passenger passenger = groupRideParticipant.getPassenger(); // Assuming GroupRideParticipant has a Passenger field
+                    reqRes.setFirstName(passenger.getFirstName());
+                    reqRes.setLastName(passenger.getLastName());
+                    reqRes.setEmail(passenger.getEmail());
+                    reqRes.setPhoneNumber(passenger.getPhoneNumber());
+                    reqRes.setRole("PASSENGER"); // Set the role as needed
+                    reqRes.setCity(passenger.getCity());
+                    // Set other fields of ReqRes as needed
+                    return reqRes;
+                }).collect(Collectors.toList());
+
+        bikeRideDTO.setParticipants(participants);
         return bikeRideDTO;
+    }
+
+
+    @Transactional
+    public void addParticipantToBikeRide(Integer bikeRideId, Integer passengerId) {
+        // Fetch the BikeRide entity
+        BikeRide bikeRide = bikeRideRepository.findById(bikeRideId)
+                .orElseThrow(() -> new IllegalArgumentException("Bike ride not found with ID: " + bikeRideId));
+
+        // Fetch the Passenger entity
+        Passenger passenger = passengerRepository.findById(passengerId)
+                .orElseThrow(() -> new IllegalArgumentException("Passenger not found with ID: " + passengerId));
+
+        // Create and save the new participant
+        GroupRideParticipants participant = new GroupRideParticipants();
+        participant.setBikeRide(bikeRide); // Set the BikeRide entity
+        participant.setPassenger(passenger); // Set the Passenger entity
+
+        groupRideParticipantsRepository.save(participant);
     }
 }
