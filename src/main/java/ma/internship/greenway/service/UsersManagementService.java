@@ -348,7 +348,24 @@ public class UsersManagementService {
         return usersRepo.searchByRoleAndName("PASSENGER", searchTerm);
     }
 
-
+    public ReqRes getUserByEmail(String email) {
+        ReqRes reqRes = new ReqRes();
+        try {
+            Optional<User> userOptional = usersRepo.findByEmail(email);
+            if (userOptional.isPresent()) {
+                reqRes.setOurUsers(userOptional.get());
+                reqRes.setStatusCode(200);
+                reqRes.setMessage("User with email '" + email + "' found successfully");
+            } else {
+                reqRes.setStatusCode(404);
+                reqRes.setMessage("User not found for email: " + email);
+            }
+        } catch (Exception e) {
+            reqRes.setStatusCode(500);
+            reqRes.setMessage("Error occurred while getting user info: " + e.getMessage());
+        }
+        return reqRes;
+    }
 
 
 }

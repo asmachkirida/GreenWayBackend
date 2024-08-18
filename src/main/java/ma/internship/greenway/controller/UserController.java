@@ -97,7 +97,10 @@ public class UserController {
         return usersManagementService.searchPessengers(searchTerm);
     }
 
-
+    @GetMapping("/admin/get-user-by-email")
+    public ResponseEntity<ReqRes> getUserByEmail(@RequestParam String email) {
+        return ResponseEntity.ok(usersManagementService.getUserByEmail(email));
+    }
 
 }
 
