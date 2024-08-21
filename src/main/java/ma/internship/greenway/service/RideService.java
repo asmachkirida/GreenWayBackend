@@ -121,7 +121,8 @@ public class RideService {
         rideDTO.setNbrPassengers(ride.getNbrPassengers());
         rideDTO.setStatus(ride.getStatus());
         rideDTO.setCarId(ride.getCar().getId());
-        // Fetching passengers (users) associated with this ride
+
+        // Fetching passengers
         List<ReqRes> reqResList = ride.getRidePassengers().stream()
                 .map(ridePassenger -> {
                     ReqRes reqRes = new ReqRes();
@@ -130,15 +131,15 @@ public class RideService {
                     reqRes.setLastName(passenger.getLastName());
                     reqRes.setEmail(passenger.getEmail());
                     reqRes.setPhoneNumber(passenger.getPhoneNumber());
-                    reqRes.setRole("PASSENGER"); // Set the role as needed
+                    reqRes.setRole("PASSENGER");
                     reqRes.setCity(passenger.getCity());
-                    // Set other fields of ReqRes as needed
                     return reqRes;
                 }).collect(Collectors.toList());
 
         rideDTO.setPassengers(reqResList);
         return rideDTO;
     }
+
 
     public List<Ride> filterRides(String startLocation, String endLocation, LocalDate date, Double minPrice, Double maxPrice, Boolean airConditionning, Boolean petAllowed, Integer minDuration, Integer maxDuration) {
         return rideRepository.findAll().stream()

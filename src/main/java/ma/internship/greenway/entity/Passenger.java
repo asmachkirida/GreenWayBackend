@@ -1,5 +1,6 @@
 package ma.internship.greenway.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +14,6 @@ import java.util.List;
 @Entity
 @Table(name = "passengers")
 @DiscriminatorValue("Passenger")
-
 public class Passenger extends User {
     private String membership;
 
@@ -21,9 +21,9 @@ public class Passenger extends User {
     private List<BikeRide> createdBikeRides;
 
     @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<GroupRideParticipants> bikeRidesParticipating;
-
-    @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Manage the serialization of Passenger's side
     private List<RidePassenger> ridePassengers;
 
+    @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GroupRideParticipants> bikeRidesParticipating;
 }

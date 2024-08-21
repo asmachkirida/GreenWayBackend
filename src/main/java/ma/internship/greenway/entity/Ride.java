@@ -1,5 +1,6 @@
 package ma.internship.greenway.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class Ride {
     private String startTime;
     private String endTime;
     private int duration;
-    private float distance ;
+    private float distance;
     private float price;
     private boolean cigaretteAllowed;
     private boolean airConditionning;
@@ -35,10 +36,10 @@ public class Ride {
     @JoinColumn(name = "car_id", nullable = false)
     private Car car;
 
+    @OneToMany(mappedBy = "ride", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Manage the serialization of Ride's side
+    private List<RidePassenger> ridePassengers;
 
     @OneToMany(mappedBy = "ride", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
-
-    @OneToMany(mappedBy = "ride", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RidePassenger> ridePassengers;
 }

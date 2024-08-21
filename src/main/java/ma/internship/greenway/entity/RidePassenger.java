@@ -1,5 +1,6 @@
 package ma.internship.greenway.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,10 +21,12 @@ public class RidePassenger {
 
     @ManyToOne
     @JoinColumn(name = "ride_id", nullable = false)
+    @JsonBackReference // Prevents the Ride from being serialized again
     private Ride ride;
 
     @ManyToOne
     @JoinColumn(name = "passenger_id", nullable = false)
+    @JsonBackReference // Prevents the Passenger from being serialized again
     private Passenger passenger;
 
     private Date bookingDate;
