@@ -180,4 +180,13 @@ public class RideService {
     }
 
 
+
+    public List<RideDTO> getRidesByPassengerId(Integer passengerId) {
+        List<RidePassenger> ridePassengers = ridePassengerRepository.findByPassengerId(passengerId);
+        return ridePassengers.stream()
+                .map(ridePassenger -> convertToDTO(ridePassenger.getRide()))
+                .collect(Collectors.toList());
+    }
+
+
 }

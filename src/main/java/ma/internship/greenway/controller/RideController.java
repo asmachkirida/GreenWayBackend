@@ -81,4 +81,11 @@ public class RideController {
         rideService.addPassengerToRide(rideId, passengerId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/passenger/{passengerId}")
+    public ResponseEntity<List<RideDTO>> getRidesByPassengerId(@PathVariable Integer passengerId) {
+        List<RideDTO> rides = rideService.getRidesByPassengerId(passengerId);
+        return ResponseEntity.ok(rides);
+    }
+
 }
