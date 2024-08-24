@@ -4,6 +4,7 @@ package ma.internship.greenway.service;
 import ma.internship.greenway.dto.DriverDTO;
 import ma.internship.greenway.dto.PassengerDTO;
 import ma.internship.greenway.dto.ReqRes;
+import ma.internship.greenway.dto.RideDTO;
 import ma.internship.greenway.entity.Driver;
 import ma.internship.greenway.entity.Passenger;
 import ma.internship.greenway.entity.User;
@@ -21,6 +22,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -366,6 +368,8 @@ public class UsersManagementService {
         }
         return reqRes;
     }
+
+
 
 
 }

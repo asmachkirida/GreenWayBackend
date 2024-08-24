@@ -188,5 +188,9 @@ public class RideService {
                 .collect(Collectors.toList());
     }
 
-
+    public List<RideDTO> getRidesByDriverId(Integer driverId) {
+        return rideRepository.findByDriverId(driverId).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
 }
