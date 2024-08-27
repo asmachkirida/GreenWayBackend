@@ -16,7 +16,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "driver"})
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

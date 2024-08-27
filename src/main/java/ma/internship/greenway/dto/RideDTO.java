@@ -28,4 +28,6 @@ public class RideDTO {
     private Integer carId;
     private List<ReviewDTO> reviews;
     private List<ReqRes> passengers;
+
+
 }

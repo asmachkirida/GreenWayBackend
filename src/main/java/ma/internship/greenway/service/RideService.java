@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,10 +36,14 @@ public class RideService {
     @Autowired
     private RidePassengerRepository ridePassengerRepository;
 
-    public RideDTO addRide(RideDTO rideDTO) {
-        Car car = carRepository.findById(rideDTO.getCarId())
+    public RideDTO addRide(Integer carId, RideDTO rideDTO) {
+
+        Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new RuntimeException("Car not found"));
 
+
+
+        // Create and populate the Ride entity
         Ride ride = new Ride();
         ride.setStartLocation(rideDTO.getStartLocation());
         ride.setEndLocation(rideDTO.getEndLocation());
@@ -53,12 +58,15 @@ public class RideService {
         ride.setPetAllowed(rideDTO.isPetAllowed());
         ride.setNbrPassengers(rideDTO.getNbrPassengers());
         ride.setStatus(rideDTO.getStatus());
-        ride.setCar(car);
+        ride.setCar(car); // Set the retrieved Car entity
 
+        // Save the Ride entity
         Ride savedRide = rideRepository.save(ride);
         rideDTO.setId(savedRide.getId());
         return rideDTO;
     }
+
+
 
     public RideDTO updateRide(Integer id, RideDTO rideDTO) {
         Ride ride = rideRepository.findById(id)

@@ -20,8 +20,9 @@ public class RideController {
     private RideService rideService;
 
     @PostMapping
-    public ResponseEntity<RideDTO> addRide(@RequestBody RideDTO rideDTO) {
-        RideDTO createdRide = rideService.addRide(rideDTO);
+    public ResponseEntity<RideDTO> createRide(@RequestParam Integer carId, @RequestBody RideDTO rideDTO) {
+        System.out.println("Received carId: " + carId); // Add this line to debug
+        RideDTO createdRide = rideService.addRide(carId, rideDTO);
         return ResponseEntity.ok(createdRide);
     }
 

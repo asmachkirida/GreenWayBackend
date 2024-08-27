@@ -14,4 +14,8 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
     List<Car> findByDriverId(Integer driverId);
     @Query("SELECT c FROM Car c WHERE (:brand IS NULL OR c.brand LIKE %:brand%)")
     List<Car> searchByBrand(@Param("brand") String brand);
+
+
+    Optional<Car> findById(Integer id);
+
 }
