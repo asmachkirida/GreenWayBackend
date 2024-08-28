@@ -25,4 +25,8 @@ public class Driver extends User {
     @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Car> cars;
+
+    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Notification> notifications;  // New relation
 }
+

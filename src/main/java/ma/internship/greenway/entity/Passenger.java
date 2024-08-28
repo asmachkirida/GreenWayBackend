@@ -26,4 +26,7 @@ public class Passenger extends User {
 
     @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GroupRideParticipants> bikeRidesParticipating;
+
+    @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Notification> notifications;  // New relation
 }
