@@ -15,6 +15,6 @@ public class NotificationDTO {
     private Date timestamp;
     private boolean isRead;
 
-    private PassengerDTO passenger;
-    private DriverDTO driver;
+    private Integer passengerId;
+    private Integer driverId;
 }
