@@ -1,5 +1,6 @@
 package ma.internship.greenway.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,8 @@ public class BikeRide {
 
     @ManyToOne
     @JoinColumn(name = "creator_id", nullable = false)
+    @JsonIgnoreProperties("createdBikeRides")  // Ignore the 'createdBikeRides' field when serializing 'creator'
+
     private Passenger creator;
 
     @OneToMany(mappedBy = "bikeRide", cascade = CascadeType.ALL, orphanRemoval = true)

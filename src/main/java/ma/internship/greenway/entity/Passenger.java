@@ -21,7 +21,7 @@ public class Passenger extends User {
     private List<BikeRide> createdBikeRides;
 
     @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // Manage the serialization of Passenger's side
+    @JsonManagedReference // Parent side
     private List<RidePassenger> ridePassengers;
 
     @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
