@@ -370,6 +370,40 @@ public class UsersManagementService {
     }
 
 
+    public ReqRes updateDriverRating(Integer driverId, float newRating) {
+        ReqRes resp = new ReqRes();
+
+        try {
+            Optional<Driver> driverOptional = driverRepository.findById(driverId);
+            if (driverOptional.isPresent()) {
+                Driver driver = driverOptional.get();
+
+                // Check if the driver's rating is 0
+                if (driver.getRating() == 0) {
+                    // First rating
+                    driver.setRating(newRating);
+                } else {
+                    // Average the existing rating with the new rating
+                    float currentRating = driver.getRating();
+                    driver.setRating((currentRating + newRating) / 2);
+                }
+
+                // Save the updated driver
+                driverRepository.save(driver);
+
+                resp.setStatusCode(200);
+                resp.setMessage("Driver rating updated successfully");
+            } else {
+                resp.setStatusCode(404);
+                resp.setMessage("Driver not found");
+            }
+        } catch (Exception e) {
+            resp.setStatusCode(500);
+            resp.setMessage("Error occurred while updating driver rating: " + e.getMessage());
+        }
+
+        return resp;
+    }
 
 
 }

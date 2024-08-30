@@ -102,5 +102,10 @@ public class UserController {
         return ResponseEntity.ok(usersManagementService.getUserByEmail(email));
     }
 
+    @PutMapping("/admin/{driverId}/rating")
+    public ResponseEntity<ReqRes> updateDriverRating(@PathVariable Integer driverId, @RequestParam Float newRating) {
+        return ResponseEntity.ok(usersManagementService.updateDriverRating(driverId, newRating));
+    }
+
 }
 
