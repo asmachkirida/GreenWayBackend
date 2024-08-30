@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
+
 @RequestMapping("/rides")
 public class RideController {
 
@@ -95,4 +97,12 @@ public class RideController {
         return ResponseEntity.ok(rides);
     }
 
+
+    @PatchMapping("/{id}/update-passengers-status")
+    public RideDTO updateNbrPassengersAndStatus(
+            @PathVariable Integer id,
+            @RequestParam(required = false) Integer nbrPassengers,
+            @RequestParam(required = false) String status) {
+        return rideService.updateNbrPassengersAndStatus(id, nbrPassengers, status);
+    }
 }

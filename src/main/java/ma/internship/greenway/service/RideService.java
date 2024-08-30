@@ -201,4 +201,27 @@ public class RideService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
+
+    public RideDTO updateNbrPassengersAndStatus(Integer rideId, Integer nbrPassengers, String status) {
+        Ride ride = rideRepository.findById(rideId)
+                .orElseThrow(() -> new RuntimeException("Ride not found"));
+
+        // Update the number of passengers if provided
+        if (nbrPassengers != null) {
+            ride.setNbrPassengers(nbrPassengers);
+        }
+
+        // Update the status if provided
+        if (status != null && !status.isEmpty()) {
+            ride.setStatus(status);
+        }
+
+        // Save the updated ride
+        Ride updatedRide = rideRepository.save(ride);
+
+        // Convert to DTO and return
+        return convertToDTO(updatedRide);
+    }
+
 }
