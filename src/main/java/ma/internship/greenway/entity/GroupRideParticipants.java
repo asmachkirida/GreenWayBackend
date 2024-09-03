@@ -1,5 +1,6 @@
 package ma.internship.greenway.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class GroupRideParticipants {
 
     @ManyToOne
     @JoinColumn(name = "passenger_id", nullable = false)
+    @JsonBackReference
     private Passenger passenger;
 
     @ManyToOne

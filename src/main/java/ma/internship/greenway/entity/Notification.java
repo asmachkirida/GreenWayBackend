@@ -23,7 +23,7 @@ public class Notification {
 
     @ManyToOne
     @JoinColumn(name = "passenger_id")
-    @JsonBackReference // Prevents infinite recursion when serializing Passenger
+    @JsonBackReference
     private Passenger passenger;
 
     @ManyToOne

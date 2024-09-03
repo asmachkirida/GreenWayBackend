@@ -26,7 +26,7 @@ public class RidePassenger {
 
     @ManyToOne
     @JoinColumn(name = "passenger_id", nullable = false)
-    @JsonBackReference // Prevents the Passenger from being serialized again
+    @JsonBackReference
     private Passenger passenger;
 
     private Date bookingDate;
