@@ -116,6 +116,11 @@ public class BikeRideService {
         BikeRide bikeRide = bikeRideRepository.findById(bikeRideId)
                 .orElseThrow(() -> new IllegalArgumentException("Bike ride not found with ID: " + bikeRideId));
 
+        // Check if there are available spots before adding a participant
+        if (bikeRide.getMaxRiders() <= 0) {
+            throw new IllegalArgumentException("No available spots left for this bike ride");
+        }
+
         // Fetch the Passenger entity
         Passenger passenger = passengerRepository.findById(passengerId)
                 .orElseThrow(() -> new IllegalArgumentException("Passenger not found with ID: " + passengerId));
@@ -126,5 +131,10 @@ public class BikeRideService {
         participant.setPassenger(passenger); // Set the Passenger entity
 
         groupRideParticipantsRepository.save(participant);
+
+        // Update the maxRiders count
+        bikeRide.setMaxRiders(bikeRide.getMaxRiders() - 1);
+        bikeRideRepository.save(bikeRide);
     }
+
 }
