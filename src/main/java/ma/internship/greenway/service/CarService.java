@@ -40,10 +40,10 @@ public class CarService {
 
     public CarDTO updateCar(Integer id, CarDTO carDTO) {
         Car car = carRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Car not found"));
+                .orElseThrow(() -> new RuntimeException("Car not found")); // Ensure the ID exists
 
         Driver driver = driverRepository.findById(carDTO.getDriverId())
-                .orElseThrow(() -> new RuntimeException("Driver not found"));
+                .orElseThrow(() -> new RuntimeException("Driver not found")); // Ensure the driver exists
 
         car.setModel(carDTO.getModel());
         car.setLicensePlate(carDTO.getLicensePlate());
@@ -56,6 +56,7 @@ public class CarService {
 
         return convertToDTO(updatedCar);
     }
+
 
     public void deleteCar(Integer id) {
         carRepository.deleteById(id);

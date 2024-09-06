@@ -32,4 +32,11 @@ public class ReviewController {
         List<ReviewDTO> reviews = reviewService.getReviewsByRideId(rideId);
         return ResponseEntity.ok(reviews);
     }
+
+    // New endpoint to get all reviews
+    @GetMapping
+    public ResponseEntity<List<ReviewDTO>> getAllReviews() {
+        List<ReviewDTO> reviews = reviewService.getAllReviews();
+        return ResponseEntity.ok(reviews);
+    }
 }

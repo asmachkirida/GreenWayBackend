@@ -41,4 +41,12 @@ public class ReviewService {
                 .map(review -> new ReviewDTO(review.getId(), review.getDetails(), review.getRide().getId()))
                 .collect(Collectors.toList());
     }
+
+    // New method to get all reviews
+    public List<ReviewDTO> getAllReviews() {
+        List<Review> reviews = reviewRepository.findAll();
+        return reviews.stream()
+                .map(review -> new ReviewDTO(review.getId(), review.getDetails(), review.getRide().getId()))
+                .collect(Collectors.toList());
+    }
 }
